@@ -10,6 +10,9 @@ extern crate hyper;
 use hyper::client::Client;
 use std::io::Read;
 
+extern crate rustc_serialize;
+use rustc_serialize::json::Json;
+
 fn main() {
   let matches = App::new("cli_basics")
                     .version("0.1")
@@ -46,7 +49,9 @@ fn run_get() {
   let mut body = String::new();
   response.read_to_string(&mut body).unwrap();
 
-  println!("{}", body);
+  let data = Json::from_str(&body).unwrap();
+
+  println!("{:?}", data);
 
   debug!("Done running the request");
 }
