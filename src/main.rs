@@ -1,11 +1,14 @@
 #[macro_use]
 extern crate clap;
+use clap::{Arg, App, SubCommand};
 
 #[macro_use]
 extern crate log;
 extern crate flexi_logger;
 
-use clap::{Arg, App, SubCommand};
+extern crate hyper;
+use hyper::client::Client;
+use std::io::Read;
 
 fn main() {
   let matches = App::new("cli_basics")
@@ -33,5 +36,17 @@ fn main() {
 }
 
 fn run_get() {
-  debug!("Faking GET request");
+  debug!("Running GET request");
+
+  let client = Client::new();
+  let mut response = client.get("https://eu.httpbin.org/get").send().unwrap();
+
+  debug!("Response status was {:?}", response.status);
+
+  let mut body = String::new();
+  response.read_to_string(&mut body).unwrap();
+
+  println!("{}", body);
+
+  debug!("Done running the request");
 }
