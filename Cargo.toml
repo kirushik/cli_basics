@@ -1,0 +1,4 @@
+[package]
+name = "cli_basics"
+version = "0.1.0"
+authors = ["Kirill Pimenov <kirill@pimenov.cc>"]
